@@ -10,7 +10,7 @@ public class FlightAPIService : IFlightAPIService
 {
     #region Properties
     private readonly IHttpClientFactory clientFactory;
-    private static string BaseURL => "https://run.mocky.io/v3/73437984-a7e6-46b2-ac53-92124baa3383";
+    private static string BaseURL => "https://run.mocky.io/v3/11e9d99d-6c6a-4915-8038-7eeea1b35939";
     #endregion
 
     #region Constructor
