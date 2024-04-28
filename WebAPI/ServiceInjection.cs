@@ -1,4 +1,5 @@
 using BusinessLayer.Configurations;
+using BusinessLayer.ExternalServices;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
 using DataLayer;
@@ -29,6 +30,7 @@ internal class ServiceInjection : AbstractServiceInjection
     private void AddServices()
     {
         Services.AddScoped<IFileService, FileService>();
+        Services.AddScoped<IFlightAPIService, FlightAPIService>();
     }
 
     private void AddBusinessLogics()
