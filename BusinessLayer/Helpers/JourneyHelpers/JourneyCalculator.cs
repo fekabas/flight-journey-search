@@ -12,7 +12,7 @@ public class JourneyCalculator : IJourneyCalculator
     {
         
     }
-    public List<FlightCombinationRes> FindRoute(List<FlightItemRes> flights, string origin, string destination, int maxLayovers = 1)
+    public List<JourneyRes> FindRoute(List<FlightItemRes> flights, string origin, string destination, int maxLayovers = 1)
     {
         // Dictionary to store explored paths (origin -> [connected flights])
         var explored = new Dictionary<string, List<string>>();
@@ -53,8 +53,11 @@ public class JourneyCalculator : IJourneyCalculator
         // Start recursion from origin airport
         FindCombinationsHelper(origin, new List<string>(), 0);
 
-        return combinations.Select(c => new FlightCombinationRes()
+        return combinations.Select(c => new JourneyRes()
         {
+            Origin = origin,
+            Destination = destination,
+            Price = c.Select(f => flights.Single(i => i.Transport.FlightNumber == f)).Sum(f => f.Price),
             Flights = c.Select(f => flights.Single(i => i.Transport.FlightNumber == f)).ToList()
         }).ToList();
     }
