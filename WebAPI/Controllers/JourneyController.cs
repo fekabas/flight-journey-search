@@ -22,7 +22,7 @@ public class JourneyController : Controller
     }
 
     /// <summary>
-    /// Get flight that matches origin and destination
+    /// Get the cheapest flight to go from origin to destination
     /// </summary>
     [HttpGet("{origin}/{destination}")]
     public async Task<ActionResult<JourneyRes>> Find(string origin, string destination, int layovers = 1)

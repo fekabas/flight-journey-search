@@ -23,9 +23,12 @@ public class JourneyCalculator : IJourneyCalculator
         void FindCombinationsHelper(string currentAirport, List<string> currentFlightCodes, int connectionsMade)
         {
             // Check if destination is reached or connection limit exceeded
-            if (currentAirport == destination || connectionsMade > maxConnections)
+            if (currentAirport == destination && connectionsMade <= maxConnections)
             {
                 combinations.Add(new List<string>(currentFlightCodes));
+                return;
+            } else if (connectionsMade > maxConnections)
+            {
                 return;
             }
 
