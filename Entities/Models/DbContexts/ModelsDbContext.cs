@@ -29,14 +29,16 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
     private static void ApplyCurrentLayerEntityConfigurations(ModelBuilder modelBuilder)
     {
 
-        modelBuilder.Entity<Journey>()
-            .HasQueryFilter(e => !e.Deleted);
-        modelBuilder.Entity<Transport>()
-            .HasQueryFilter(e => !e.Deleted);
-        modelBuilder.Entity<Flight>()
-            .HasQueryFilter(e => !e.Deleted);
-        modelBuilder.Entity<FlightJourney>()
-            .HasKey(e => new { e.JourneyId, e.FlightId });
+        modelBuilder.Entity<Journey>().HasQueryFilter(e => !e.Deleted);
+        modelBuilder.Entity<Journey>().HasIndex(e => new { e.Origin, e.Destination, e.Deleted});
+
+        modelBuilder.Entity<Transport>().HasQueryFilter(e => !e.Deleted);
+        modelBuilder.Entity<Transport>().HasIndex(e => e.Deleted);
+
+        modelBuilder.Entity<Flight>().HasQueryFilter(e => !e.Deleted);
+        modelBuilder.Entity<Flight>().HasIndex(e => e.Deleted);
+
+        modelBuilder.Entity<FlightJourney>().HasKey(e => new { e.JourneyId, e.FlightId });
     }
 
     private void GenerateSeedData(ModelBuilder modelBuilder)

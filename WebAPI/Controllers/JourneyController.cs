@@ -23,9 +23,12 @@ public class JourneyController : Controller
     /// Get the cheapest flight to go from origin to destination
     /// </summary>
     [HttpGet("{origin}/{destination}")]
-    public async Task<ActionResult<JourneyRes>> Find(string origin, string destination, int maxLayovers = 1)
+    public async Task<ActionResult<JourneyRes>> Find(string origin, string destination, uint numberOfFlighs = 1)
     {
-        JourneyRes? journey = await journeyBusinessLogic.GetCheapestFlightAsync(origin, destination, maxLayovers);
+        if(origin == destination)
+            return BadRequest("Origin and destination can't be the same");
+
+        JourneyRes? journey = await journeyBusinessLogic.GetCheapestFlightAsync(origin, destination, numberOfFlighs);
 
         if(journey is null)
             return NoContent();

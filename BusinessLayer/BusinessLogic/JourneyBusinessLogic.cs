@@ -23,7 +23,7 @@ public class JourneyBusinessLogic : IJourneyBusinessLogic
         this.journeyService = journeyService;
     }
     
-    public async Task<List<JourneyRes>?> GetCombinationsAsync(string origin, string destination, int maxLayovers = 1)
+    public async Task<List<JourneyRes>?> GetCombinationsAsync(string origin, string destination, uint numberOfFlighs = 1)
     {
         IEnumerable<FlightItemRes> flights = (await flightAPIService.GetFlightsAsync())
         .Select(f => new FlightItemRes()
@@ -38,7 +38,7 @@ public class JourneyBusinessLogic : IJourneyBusinessLogic
             }
         });
 
-        var journeyFlights = journeyCalculator.FindRoute(flights.ToList(), origin, destination, maxLayovers);
+        var journeyFlights = journeyCalculator.FindRoute(flights.ToList(), origin, destination, numberOfFlighs);
 
         if (journeyFlights is null || !journeyFlights.Any())
             return null;
@@ -46,7 +46,7 @@ public class JourneyBusinessLogic : IJourneyBusinessLogic
         return journeyFlights;
     }
 
-    public async Task<JourneyRes?> GetCheapestFlightAsync(string origin, string destination, int maxLayovers = 1)
+    public async Task<JourneyRes?> GetCheapestFlightAsync(string origin, string destination, uint numberOfFlighs = 1)
     {
         Journey? dbJourney = await journeyService.GetAll()
                             .Include(j => j.Flights)
@@ -55,7 +55,7 @@ public class JourneyBusinessLogic : IJourneyBusinessLogic
                             .Where(j =>
                                 j.Origin == origin
                                 && j.Destination == destination
-                                && j.Flights.Count() < maxLayovers + 1)
+                                && j.Flights.Count() < numberOfFlighs + 1)
                             .OrderBy(j => j.Flights.Sum(f => f.Flight!.Price))
                             .FirstOrDefaultAsync();
 
@@ -63,7 +63,7 @@ public class JourneyBusinessLogic : IJourneyBusinessLogic
             return new JourneyRes(dbJourney);
 
         // Try to calculate the route
-        var journeyCombinations = await GetCombinationsAsync(origin, destination, maxLayovers);
+        var journeyCombinations = await GetCombinationsAsync(origin, destination, numberOfFlighs);
         var cheapestJourney = journeyCombinations?.OrderBy(j => j.Flights!.Sum(f => f.Price)).FirstOrDefault();
         
         if(cheapestJourney is null)
