@@ -7,6 +7,6 @@ namespace BusinessLayer.Interfaces
         /// <summary>
         /// Get available flights.
         /// </summary>
-        Task<ICollection<FlightItemRes>> GetFlightsAsync();
+        Task<ICollection<FlightAPIItemRes>> GetFlightsAsync();
     }
 }

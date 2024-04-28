@@ -10,7 +10,7 @@ public class FlightAPIService : IFlightAPIService
 {
     #region Properties
     private readonly IHttpClientFactory clientFactory;
-    private static string BaseURL => "https://run.mocky.io/v3/73437984-a7e6-46b2-ac53-92124baa3383";
+    private static string BaseURL => "https://run.mocky.io/v3/11e9d99d-6c6a-4915-8038-7eeea1b35939";
     #endregion
 
     #region Constructor
@@ -23,7 +23,7 @@ public class FlightAPIService : IFlightAPIService
     #endregion
 
     #region Public Methods
-    public async Task<ICollection<FlightItemRes>> GetFlightsAsync()
+    public async Task<ICollection<FlightAPIItemRes>> GetFlightsAsync()
     {
         using (var client = this.clientFactory.CreateClient())
         {
@@ -38,9 +38,9 @@ public class FlightAPIService : IFlightAPIService
 
             string responseContent = await response.Content.ReadAsStringAsync();
             if (responseContent is not null)
-                return JsonConvert.DeserializeObject<ICollection<FlightItemRes>>(responseContent) ?? new Collection<FlightItemRes>();
+                return JsonConvert.DeserializeObject<ICollection<FlightAPIItemRes>>(responseContent) ?? new Collection<FlightAPIItemRes>();
             else
-                return new Collection<FlightItemRes>();
+                return new Collection<FlightAPIItemRes>();
         }
     }
     #endregion

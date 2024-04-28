@@ -1,4 +1,5 @@
 using BusinessLayer.BusinessLogic;
+using BusinessLayer.BusinessLogic.Helpers.JourneyHelpers;
 using BusinessLayer.Interfaces;
 using BusinessLayer.JobScheduler.JobConfiguration;
 using DataLayer;
@@ -29,6 +30,8 @@ internal class ServiceInjection(IServiceCollection services, IConfiguration conf
     private void AddBusinessLogics()
     {
         Services.AddScoped<IReadingBusinessLogic, ReadingBusinessLogic>();
+        Services.AddScoped<IJourneyBusinessLogic, JourneyBusinessLogic>();
+        Services.AddSingleton<IJourneyCalculator, JourneyCalculator>();
     }
     private void AddConfigurations()
     {
