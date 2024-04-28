@@ -19,7 +19,7 @@ public class JourneyBusinessLogic : IJourneyBusinessLogic
         this.journeyCalculator = journeyCalculator;
     }
     
-    public async Task<List<FlightCombinationRes>?> GetCombinationsAsync(string origin, string destination, int layovers = 1)
+    public async Task<List<FlightCombinationRes>?> GetCombinationsAsync(string origin, string destination, int maxLayovers = 1)
     {
         IEnumerable<FlightItemRes> flights = (await flightAPIService.GetFlightsAsync())
         .Select(f => new FlightItemRes()
@@ -34,7 +34,7 @@ public class JourneyBusinessLogic : IJourneyBusinessLogic
             }
         });
 
-        var journeyFlights = journeyCalculator.FindRoute(flights.ToList(), origin, destination, layovers);
+        var journeyFlights = journeyCalculator.FindRoute(flights.ToList(), origin, destination, maxLayovers);
 
         if (journeyFlights is null || !journeyFlights.Any())
             return null;

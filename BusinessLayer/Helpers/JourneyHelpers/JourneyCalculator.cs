@@ -12,7 +12,7 @@ public class JourneyCalculator : IJourneyCalculator
     {
         
     }
-    public List<FlightCombinationRes> FindRoute(List<FlightItemRes> flights, string origin, string destination, int maxConnections = 1)
+    public List<FlightCombinationRes> FindRoute(List<FlightItemRes> flights, string origin, string destination, int maxLayovers = 1)
     {
         // Dictionary to store explored paths (origin -> [connected flights])
         var explored = new Dictionary<string, List<string>>();
@@ -20,14 +20,14 @@ public class JourneyCalculator : IJourneyCalculator
         var combinations = new List<List<string>>();
 
         // Recursive helper function to find combinations
-        void FindCombinationsHelper(string currentAirport, List<string> currentFlightCodes, int connectionsMade)
+        void FindCombinationsHelper(string currentAirport, List<string> currentFlightCodes, int layoversMade)
         {
             // Check if destination is reached or connection limit exceeded
-            if (currentAirport == destination && connectionsMade <= maxConnections)
+            if (currentAirport == destination && layoversMade <= maxLayovers)
             {
                 combinations.Add(new List<string>(currentFlightCodes));
                 return;
-            } else if (connectionsMade > maxConnections)
+            } else if (layoversMade > maxLayovers)
             {
                 return;
             }
@@ -46,7 +46,7 @@ public class JourneyCalculator : IJourneyCalculator
             foreach (var flightCode in connectedFlights)
             {
                 var newFlightCodes = new List<string>(currentFlightCodes) { flightCode };
-                FindCombinationsHelper(flights.Single(f => f.Transport.FlightNumber == flightCode).Destination, newFlightCodes, connectionsMade + 1);
+                FindCombinationsHelper(flights.Single(f => f.Transport.FlightNumber == flightCode).Destination, newFlightCodes, layoversMade + 1);
             }
         }
 
