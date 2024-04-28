@@ -1,0 +1,14 @@
+# Compilation files
+obj/
+bin/
+
+# Run folder
+.vscode/
+
+# Appsettings Development file
+appsettings.Development.json
+
+# Visual Studio 2015
+/.vs
+
+Entities/Migrations/*
