@@ -4,7 +4,7 @@ using BusinessLayer.BusinessLogic.DTOs.JourneyDTOs;
 namespace BusinessLayer.BusinessLogic.Helpers.JourneyHelpers;
 
 /// <summary>
-/// Journey Calculator implementation that returns the first found flight combination
+/// Journey Calculator implementation that returns the flight combinations for the given origin and destination
 /// </summary>
 public class JourneyCalculator : IJourneyCalculator
 {
@@ -12,7 +12,7 @@ public class JourneyCalculator : IJourneyCalculator
     {
         
     }
-    public List<JourneyRes> FindRoute(List<FlightItemRes> flights, string origin, string destination, int maxLayovers = 1)
+    public List<JourneyRes> FindRoute(List<FlightItemRes> flights, string origin, string destination, uint maxLayovers = 1)
     {
         // Dictionary to store explored paths (origin -> [connected flights])
         var explored = new Dictionary<string, List<string>>();

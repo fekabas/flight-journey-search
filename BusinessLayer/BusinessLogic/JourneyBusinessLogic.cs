@@ -23,7 +23,7 @@ public class JourneyBusinessLogic : IJourneyBusinessLogic
         this.journeyService = journeyService;
     }
     
-    public async Task<List<JourneyRes>?> GetCombinationsAsync(string origin, string destination, int numberOfFlighs = 1)
+    public async Task<List<JourneyRes>?> GetCombinationsAsync(string origin, string destination, uint numberOfFlighs = 1)
     {
         IEnumerable<FlightItemRes> flights = (await flightAPIService.GetFlightsAsync())
         .Select(f => new FlightItemRes()
@@ -46,7 +46,7 @@ public class JourneyBusinessLogic : IJourneyBusinessLogic
         return journeyFlights;
     }
 
-    public async Task<JourneyRes?> GetCheapestFlightAsync(string origin, string destination, int numberOfFlighs = 1)
+    public async Task<JourneyRes?> GetCheapestFlightAsync(string origin, string destination, uint numberOfFlighs = 1)
     {
         Journey? dbJourney = await journeyService.GetAll()
                             .Include(j => j.Flights)
