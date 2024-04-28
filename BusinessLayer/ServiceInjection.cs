@@ -1,7 +1,6 @@
 using BusinessLayer.BusinessLogic;
 using BusinessLayer.BusinessLogic.Helpers.JourneyHelpers;
 using BusinessLayer.Interfaces;
-using BusinessLayer.JobScheduler.JobConfiguration;
 using DataLayer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,13 +22,10 @@ internal class ServiceInjection(IServiceCollection services, IConfiguration conf
         AddBusinessLogics();
         AddConfigurations();
 
-        Services.AddTransient<IQuartzJobServiceInjection, QuartzJobServiceInjection>();
-
         return Services;
     }
     private void AddBusinessLogics()
     {
-        Services.AddScoped<IReadingBusinessLogic, ReadingBusinessLogic>();
         Services.AddScoped<IJourneyBusinessLogic, JourneyBusinessLogic>();
         Services.AddSingleton<IJourneyCalculator, JourneyCalculator>();
     }

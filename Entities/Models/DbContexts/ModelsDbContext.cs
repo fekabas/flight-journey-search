@@ -1,10 +1,7 @@
-using DataLayer.Interceptors;
-using Entities.Models.Enum;
 using Entities.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities.Models.DbContexts;
 
