@@ -5,7 +5,12 @@ namespace BusinessLayer.Interfaces;
 public interface IJourneyBusinessLogic
 {
     /// <summary>
-    /// Try to calculate a journey given the origin and destination provided.
+    /// Try to calculate all possible flight combinations given the origin and destination.
     /// </summary>
-    Task<List<FlightCombinationRes>?> GetCombinationsAsync(string origin, string destination, int maxLayovers = 1);
+    Task<List<JourneyRes>?> GetCombinationsAsync(string origin, string destination, int maxLayovers = 1);
+
+    /// <summary>
+    /// Try to get the cheapest journey
+    /// </summary>
+    Task<JourneyRes?> GetCheapestFlightAsync(string origin, string destination, int maxLayovers = 1);
 }

@@ -1,7 +1,5 @@
 ﻿using BusinessLayer.BusinessLogic.DTOs.JourneyDTOs;
-using BusinessLayer.ExternalServices.DTOs.FlightAPIServiceDTOs;
 using BusinessLayer.Interfaces;
-using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,17 +25,11 @@ public class JourneyController : Controller
     [HttpGet("{origin}/{destination}")]
     public async Task<ActionResult<JourneyRes>> Find(string origin, string destination, int maxLayovers = 1)
     {
-        List<FlightCombinationRes>? journeyCombinations = await journeyBusinessLogic.GetCombinationsAsync(origin, destination, maxLayovers);
-        var cheapestJourney = journeyCombinations?.OrderBy(j => j.Flights!.Sum(f => f.Price)).FirstOrDefault();
-        if(cheapestJourney is null)
+        JourneyRes? journey = await journeyBusinessLogic.GetCheapestFlightAsync(origin, destination, maxLayovers);
+
+        if(journey is null)
             return NoContent();
         else
-            return Ok(new JourneyRes()
-            {
-                Origin = origin,
-                Destination = destination,
-                Price = cheapestJourney.Flights!.Sum(f => f.Price),
-                Flights = cheapestJourney.Flights
-            });
+            return Ok(journey);
     }
 }
