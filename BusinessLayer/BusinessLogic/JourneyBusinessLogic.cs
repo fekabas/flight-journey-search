@@ -1,7 +1,6 @@
 using BusinessLayer.BusinessLogic.DTOs.FlightDTOs;
 using BusinessLayer.BusinessLogic.DTOs.JourneyDTOs;
 using BusinessLayer.BusinessLogic.DTOs.TransportDTOs;
-using BusinessLayer.ExternalServices.DTOs.FlightAPIServiceDTOs;
 using BusinessLayer.Interfaces;
 using DataLayer.Interfaces;
 using Entities.Models;
