@@ -25,16 +25,19 @@ public class JourneyController : Controller
     /// Get flight that matches origin and destination
     /// </summary>
     [HttpGet("{origin}/{destination}")]
-    public async Task<ActionResult> Find(string origin, string destination, int take = 5)
+    public async Task<ActionResult<JourneyRes>> Find(string origin, string destination, int layovers = 1)
     {
-        List<JourneyRes>? journeys = await journeyBusinessLogic.CalculateJourneyAsync(origin, destination);
-
-        if(journeys is null)
+        List<FlightCombinationRes>? journeyCombinations = await journeyBusinessLogic.GetCombinationsAsync(origin, destination, layovers);
+        var cheapestJourney = journeyCombinations?.OrderBy(j => j.Flights!.Sum(f => f.Price)).FirstOrDefault();
+        if(cheapestJourney is null)
             return NoContent();
         else
-            return Ok(new {
-                Total = journeys.Count(),
-                Journeys = journeys.OrderBy(j => j.Flights.Sum(f => f.Price)).Take(take)
+            return Ok(new JourneyRes()
+            {
+                Origin = origin,
+                Destination = destination,
+                Price = cheapestJourney.Flights!.Sum(f => f.Price),
+                Flights = cheapestJourney.Flights
             });
     }
 }

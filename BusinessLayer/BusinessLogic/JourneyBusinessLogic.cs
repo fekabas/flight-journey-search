@@ -1,4 +1,6 @@
+using BusinessLayer.BusinessLogic.DTOs.FlightDTOs;
 using BusinessLayer.BusinessLogic.DTOs.JourneyDTOs;
+using BusinessLayer.BusinessLogic.DTOs.TransportDTOs;
 using BusinessLayer.ExternalServices.DTOs.FlightAPIServiceDTOs;
 using BusinessLayer.Interfaces;
 using Entities.Models;
@@ -17,11 +19,22 @@ public class JourneyBusinessLogic : IJourneyBusinessLogic
         this.journeyCalculator = journeyCalculator;
     }
     
-    public async Task<List<JourneyRes>?> CalculateJourneyAsync(string origin, string destination)
+    public async Task<List<FlightCombinationRes>?> GetCombinationsAsync(string origin, string destination, int layovers = 1)
     {
-        ICollection<FlightItemRes> flights = await flightAPIService.GetFlightsAsync();
+        IEnumerable<FlightItemRes> flights = (await flightAPIService.GetFlightsAsync())
+        .Select(f => new FlightItemRes()
+        {
+            Origin = f.DepartureStation,
+            Destination = f.ArrivalStation,
+            Price = f.Price,
+            Transport = new TransportItemRes()
+            {
+                FlightCarrier = f.FlightCarrier,
+                FlightNumber = f.FlightNumber
+            }
+        });
 
-        var journeyFlights = journeyCalculator.FindRoute(flights.ToList(), origin, destination);
+        var journeyFlights = journeyCalculator.FindRoute(flights.ToList(), origin, destination, layovers);
 
         if (journeyFlights is null || !journeyFlights.Any())
             return null;

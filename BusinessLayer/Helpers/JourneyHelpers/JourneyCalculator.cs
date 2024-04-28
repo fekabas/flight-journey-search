@@ -1,5 +1,5 @@
+using BusinessLayer.BusinessLogic.DTOs.FlightDTOs;
 using BusinessLayer.BusinessLogic.DTOs.JourneyDTOs;
-using BusinessLayer.ExternalServices.DTOs.FlightAPIServiceDTOs;
 
 namespace BusinessLayer.BusinessLogic.Helpers.JourneyHelpers;
 
@@ -12,7 +12,7 @@ public class JourneyCalculator : IJourneyCalculator
     {
         
     }
-    public List<JourneyRes> FindRoute(List<FlightItemRes> flights, string origin, string destination, int maxConnections = 1)
+    public List<FlightCombinationRes> FindRoute(List<FlightItemRes> flights, string origin, string destination, int maxConnections = 1)
     {
         // Dictionary to store explored paths (origin -> [connected flights])
         var explored = new Dictionary<string, List<string>>();
@@ -33,9 +33,9 @@ public class JourneyCalculator : IJourneyCalculator
             var connectedFlights = new HashSet<string>();
             foreach (var flight in flights)
             {
-                if (flight.DepartureStation == currentAirport && !currentFlightCodes.Contains(flight.FlightNumber))
+                if (flight.Origin == currentAirport && !currentFlightCodes.Contains(flight.Transport.FlightNumber))
                 {
-                    connectedFlights.Add(flight.FlightNumber);
+                    connectedFlights.Add(flight.Transport.FlightNumber);
                 }
             }
 
@@ -43,16 +43,16 @@ public class JourneyCalculator : IJourneyCalculator
             foreach (var flightCode in connectedFlights)
             {
                 var newFlightCodes = new List<string>(currentFlightCodes) { flightCode };
-                FindCombinationsHelper(flights.Single(f => f.FlightNumber == flightCode).ArrivalStation, newFlightCodes, connectionsMade + 1);
+                FindCombinationsHelper(flights.Single(f => f.Transport.FlightNumber == flightCode).Destination, newFlightCodes, connectionsMade + 1);
             }
         }
 
         // Start recursion from origin airport
         FindCombinationsHelper(origin, new List<string>(), 0);
 
-        return combinations.Select(c => new JourneyRes()
+        return combinations.Select(c => new FlightCombinationRes()
         {
-            Flights = c.Select(f => flights.Single(i => i.FlightNumber == f)).ToList()
+            Flights = c.Select(f => flights.Single(i => i.Transport.FlightNumber == f)).ToList()
         }).ToList();
     }
 }

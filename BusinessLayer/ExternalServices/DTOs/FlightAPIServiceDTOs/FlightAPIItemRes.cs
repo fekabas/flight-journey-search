@@ -1,6 +1,6 @@
 namespace BusinessLayer.ExternalServices.DTOs.FlightAPIServiceDTOs;
 
-public class FlightItemRes
+public class FlightAPIItemRes
 {
     public string DepartureStation { get; set; }
     public string ArrivalStation { get; set; }

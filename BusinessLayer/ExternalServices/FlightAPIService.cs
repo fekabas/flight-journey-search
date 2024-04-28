@@ -23,7 +23,7 @@ public class FlightAPIService : IFlightAPIService
     #endregion
 
     #region Public Methods
-    public async Task<ICollection<FlightItemRes>> GetFlightsAsync()
+    public async Task<ICollection<FlightAPIItemRes>> GetFlightsAsync()
     {
         using (var client = this.clientFactory.CreateClient())
         {
@@ -38,9 +38,9 @@ public class FlightAPIService : IFlightAPIService
 
             string responseContent = await response.Content.ReadAsStringAsync();
             if (responseContent is not null)
-                return JsonConvert.DeserializeObject<ICollection<FlightItemRes>>(responseContent) ?? new Collection<FlightItemRes>();
+                return JsonConvert.DeserializeObject<ICollection<FlightAPIItemRes>>(responseContent) ?? new Collection<FlightAPIItemRes>();
             else
-                return new Collection<FlightItemRes>();
+                return new Collection<FlightAPIItemRes>();
         }
     }
     #endregion
