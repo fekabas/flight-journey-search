@@ -31,23 +31,15 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
     /// </summary>
     private static void ApplyCurrentLayerEntityConfigurations(ModelBuilder modelBuilder)
     {
-        EnumToStringConverter<ReadingEnum> readingEnumConverter = new();
-        modelBuilder.Entity<Reading>()
-            .Property(r => r.ReadingEnum)
-            .HasConversion(readingEnumConverter)
-            .HasMaxLength(64);
 
-        modelBuilder.Entity<Category>()
-            .HasQueryFilter(c => !c.Deleted);
-
-        modelBuilder.Entity<Content>()
-            .HasQueryFilter(c => !c.Deleted);
-
-        modelBuilder.Entity<DailyQuote>()
-            .HasQueryFilter(c => !c.Deleted);
-
-        modelBuilder.Entity<Reading>()
-            .HasQueryFilter(c => !c.Deleted);
+        modelBuilder.Entity<Journey>()
+            .HasQueryFilter(e => !e.Deleted);
+        modelBuilder.Entity<Transport>()
+            .HasQueryFilter(e => !e.Deleted);
+        modelBuilder.Entity<Flight>()
+            .HasQueryFilter(e => !e.Deleted);
+        modelBuilder.Entity<FlightJourney>()
+            .HasKey(e => new { e.JourneyId, e.FlightId });
     }
 
     private void GenerateSeedData(ModelBuilder modelBuilder)
@@ -58,8 +50,5 @@ public class ModelsDbContext : IdentityDbContext<ApplicationUser, IdentityRole<G
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // optionsBuilder
-        //     .AddInterceptors(new LocalToUtcInterceptor())
-        //     .AddInterceptors(new UtcToLocalInterceptor());
     }
 }

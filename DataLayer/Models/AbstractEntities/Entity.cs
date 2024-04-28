@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using DataLayer.Interfaces;
 
 namespace DataLayer.Models.AbstractEntities;
@@ -9,6 +11,8 @@ public abstract class Entity : IEntity
         Name = nameof(Entity);
     }
 
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     public string Name { get; set; }
     public bool Deleted { get; set; }
