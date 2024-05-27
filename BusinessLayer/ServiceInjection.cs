@@ -1,5 +1,6 @@
 using BusinessLayer.BusinessLogic;
 using BusinessLayer.BusinessLogic.Helpers.JourneyHelpers;
+using BusinessLayer.ExternalServices.FlightAPIService;
 using BusinessLayer.Interfaces;
 using DataLayer;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +33,7 @@ internal class ServiceInjection(IServiceCollection services, IConfiguration conf
     private void AddConfigurations()
     {
         Services.AddSingleton<IConfiguration>(x => new FlightJourneySearchConfiguration(x.GetRequiredService<IWebHostEnvironment>(), x.GetRequiredService<IServiceProvider>()));
-
+        Services.AddSingleton<FlightAPIServiceConfiguration>();
         Services.AddScoped<IGeneralConfiguration, GeneralConfiguration>();
         Services.AddScoped<IRealmConfiguration, RealmConfiguration>();
     }

@@ -1,24 +1,26 @@
 using System.Collections.ObjectModel;
 using System.Net;
-using BusinessLayer.ExternalServices.DTOs.FlightAPIServiceDTOs;
+using BusinessLayer.ExternalServices.FlightAPIService.DTOs;
 using BusinessLayer.Interfaces;
 using Newtonsoft.Json;
 
-namespace BusinessLayer.ExternalServices;
+namespace BusinessLayer.ExternalServices.FlightAPIService;
 
 public class FlightAPIService : IFlightAPIService
 {
     #region Properties
     private readonly IHttpClientFactory clientFactory;
-    private static string BaseURL => "https://run.mocky.io/v3/11e9d99d-6c6a-4915-8038-7eeea1b35939";
+    private readonly FlightAPIServiceConfiguration flightAPIServiceConfiguration;
     #endregion
 
     #region Constructor
     public FlightAPIService(
+        FlightAPIServiceConfiguration flightAPIServiceConfiguration,
         IHttpClientFactory clientFactory
         )
     {
         this.clientFactory = clientFactory;
+        this.flightAPIServiceConfiguration = flightAPIServiceConfiguration;
     }
     #endregion
 
@@ -27,7 +29,7 @@ public class FlightAPIService : IFlightAPIService
     {
         using (var client = this.clientFactory.CreateClient())
         {
-            HttpResponseMessage response = await client.GetAsync(BaseURL);
+            HttpResponseMessage response = await client.GetAsync(flightAPIServiceConfiguration.FetchUrl);
             if (!response.IsSuccessStatusCode)
             {
                 if (response.StatusCode == HttpStatusCode.InternalServerError)

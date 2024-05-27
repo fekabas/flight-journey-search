@@ -1,4 +1,4 @@
-using BusinessLayer.ExternalServices;
+using BusinessLayer.ExternalServices.FlightAPIService;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Services;
 using DataLayer;
@@ -39,5 +39,6 @@ internal class ServiceInjection : AbstractServiceInjection
     private void AddConfigurations()
     {
         Services.AddSingleton<IConfiguration>(x => new FlightJourneySearchConfiguration(x.GetRequiredService<IWebHostEnvironment>(), x.GetRequiredService<IServiceProvider>()));
+        Services.AddSingleton<FlightAPIServiceConfiguration>();
     }
 }
