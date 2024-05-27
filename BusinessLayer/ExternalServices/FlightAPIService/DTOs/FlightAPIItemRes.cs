@@ -1,4 +1,4 @@
-namespace BusinessLayer.ExternalServices.DTOs.FlightAPIServiceDTOs;
+namespace BusinessLayer.ExternalServices.FlightAPIService.DTOs;
 
 public class FlightAPIItemRes
 {

@@ -1,4 +1,4 @@
-using BusinessLayer.ExternalServices.DTOs.FlightAPIServiceDTOs;
+using BusinessLayer.ExternalServices.FlightAPIService.DTOs;
 
 namespace BusinessLayer.Interfaces
 {
